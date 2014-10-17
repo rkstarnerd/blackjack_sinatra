@@ -7,6 +7,10 @@ use Rack::Session::Cookie, :key => 'rack.session',
 
 set :sessions, true
 
+get '/' do
+  redirect '/new_game'
+end
+
 get '/new_game' do
   erb :new_game
 end
@@ -21,4 +25,8 @@ end
 
 post '/game' do
   erb :game
+end
+
+not_found do
+  halt 404, 'Let\'s try this again.. Hit the back button.'
 end
