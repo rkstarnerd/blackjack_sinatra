@@ -16,6 +16,7 @@ get '/new_game' do
 end
 
 post '/bet' do
+  @name = params[:name]
   erb :bet
 end
 
@@ -28,5 +29,5 @@ post '/game' do
 end
 
 not_found do
-  halt 404, 'Let\'s try this again.. Hit the back button.'
+  erb :not_found
 end
