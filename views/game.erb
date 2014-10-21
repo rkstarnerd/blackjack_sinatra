@@ -1,0 +1,47 @@
+
+<h1>Blackjack!</h1>
+
+<%
+
+files = Dir.entries("C:/Users/rkstar/Documents/GitHub/tl-blackjack-webapp/public/images/cards/")
+
+deck = []
+files.each { |file| deck << file if file.include? "jpg"}
+deck.delete_if { |file| file.include? "cover" or file.include? "joker"}
+deck.shuffle!
+
+def hit(deck, cards)
+  cards << deck.shift
+  card_path = "/images/cards/"
+  "#{card_path + cards.last.to_s}"
+end
+
+def calculate(cards)
+  total = 0
+
+  cards.each do |value|
+    value.each_char { |e| total += e if e.to_i != 0}
+    if value.include? 'ace'
+      total += 11
+    else
+      total += 10
+    end
+  end
+
+  cards.select { |e| e.include? 'ace'}.count.times {total -= 10 if total > 21}
+  total
+end
+%>
+
+<h4>Dealer's Cards:<br>
+<% dealer_cards = [] %>
+<img src="/images/cards/cover.jpg" />
+<img src= <%= hit(deck, dealer_cards) %> />
+
+<p><%= @name %> Cards:<br>
+<% player_cards = [] %>
+<img src= <%= hit(deck, player_cards) %> />
+<img src= <%= hit(deck, player_cards) %> />
+<br>
+<%= player_cards %>
+<%= @name %> has <%= calculate(player_cards)%> What would you like to do <%= @name %>?
