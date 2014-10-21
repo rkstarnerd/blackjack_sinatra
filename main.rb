@@ -1,33 +1,27 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
+require 'erb'
 
 use Rack::Session::Cookie, :key => 'rack.session',
                            :path => '/',
-                           :secret => 'your_secret' # change 'your_secret to some random string'
+                           :secret => 'FvFRCS44N26EfeCALAhc'
 
 set :sessions, true
 
-get '/' do
-  redirect '/new_game'
-end
+get ('/') { redirect '/new_game' }
 
-get '/new_game' do
-  erb :new_game
-end
+get ('/new_game') { erb :new_game }
 
 post '/bet' do
-  @name = params[:name]
+  @name = params[:name].capitalize
   erb :bet
 end
 
-get '/bet' do
-  erb :bet
-end
+get ('/bet') { erb :bet }
 
 post '/game' do
+  @bet_amount = params[:bet_amount]
   erb :game
 end
 
-not_found do
-  erb :not_found
-end
+not_found { erb :not_found }
