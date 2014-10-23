@@ -3,45 +3,80 @@
 
 <%
 
-files = Dir.entries("C:/Users/rkstar/Documents/GitHub/tl-blackjack-webapp/public/images/cards/")
+files = Dir.entries("C:/Users/rkstar/Dropbox/tealeaf/tl-blackjack-webapp/tl-blackjack-webapp/public/images/cards/")
 
-deck = []
-files.each { |file| deck << file if file.include? "jpg"}
-deck.delete_if { |file| file.include? "cover" or file.include? "joker"}
-deck.shuffle!
+card_files = []
+values = []
 
-def hit(deck, cards)
-  cards << deck.shift
+files.each { |file| card_files << file if file.include? "jpg"}
+card_files.delete_if { |file| file.include? "cover" or file.include? "joker"}
+card_files.shuffle!
+
+card_files.each do |card|
+  if card.include? 'ace'
+    values << 11
+  elsif card.include? 'jack'
+    values << 10
+  elsif card.include? 'queen'
+    values << 10
+  elsif card.include? 'king'
+    values << 10
+  else card.each_char do |e|
+    if e.to_i == 1
+      values << 10
+    elsif e.to_i != 0 && e.to_i != 1
+      values << e.to_i
+    else
+      values << nil
+    end
+  end
+end
+end
+
+values.compact!
+
+deck = Hash[card_files.zip values]
+
+def hit(card_files, cards)
+  cards << card_files.shift
   card_path = "/images/cards/"
   "#{card_path + cards.last.to_s}"
 end
 
-def calculate(cards)
+def calculate(cards, deck)
   total = 0
 
-  cards.each do |value|
-    value.each_char { |e| total += e if e.to_i != 0}
-    if value.include? 'ace'
-      total += 11
-    else
-      total += 10
-    end
-  end
+  cards.each { |card| total += deck[card]}
 
   cards.select { |e| e.include? 'ace'}.count.times {total -= 10 if total > 21}
+
   total
 end
+
 %>
 
 <h4>Dealer's Cards:<br>
-<% dealer_cards = [] %>
+<% dealer_cards = [] 
+dealer_cards << card_files.shift
+%>
 <img src="/images/cards/cover.jpg" />
-<img src= <%= hit(deck, dealer_cards) %> />
-
-<p><%= @name %> Cards:<br>
-<% player_cards = [] %>
-<img src= <%= hit(deck, player_cards) %> />
-<img src= <%= hit(deck, player_cards) %> />
+<img src= <%= hit(card_files, dealer_cards) %> />
 <br>
-<%= player_cards %>
-<%= @name %> has <%= calculate(player_cards)%> What would you like to do <%= @name %>?
+<br>
+<p><%= session[:name] %>'s Cards:<br>
+<% player_cards = [] %>
+<img src= <%= hit(card_files, player_cards) %> />
+<img src= <%= hit(card_files, player_cards) %> />
+<br>
+<br>
+You have <%= calculate(player_cards, deck)%>. What would you like to do, <%= session[:name] %>?
+<table>
+<tr><small style="color:gray"; "size:10">You have <strong><%= session[:total_amount] %></strong>. Bet amount this round: <strong>$<%= session[:bet_amount] %></strong></small>
+<form id="hit" action='/game/player_hit' method="post">
+     <br><input type="submit" class="btn btn-success btn-large" name="hit" value="Hit">
+</form>
+<form id="stay" action='/game/player_stay' method="post">
+    <input type="submit" class="btn btn-warning btn-large" name="stay" value="Stay">
+</form>
+</tr>
+</table>
