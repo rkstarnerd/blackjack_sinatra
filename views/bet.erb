@@ -1,6 +1,8 @@
-<h3>Make a bet for this round.</h3>
-<%= #{params[:name]} %> has $500.
-<form action="/game" method="post">
-  <input type="text" name="bet_amount">
-  <input type="submit" class="btn" value="Make Bet">
-</form>
+<center>
+  <h3 style="color: black">Make a bet for this round.</h3>
+  <%= session[:name] %>, you have $<%= session[:total_amount] %>.
+  <form action="/game" method="post">
+    <input type="text" name="bet_amount" placeholder="Enter Amount">
+    <br> <input type="submit" class="btn" value="Make Bet">
+  </form>
+</center>
