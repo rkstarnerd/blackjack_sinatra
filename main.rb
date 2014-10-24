@@ -70,7 +70,7 @@ get '/new_game' do
 
   session[:total_amount] = 500.to_i
 
-  erb :new_game 
+  erb :new_game
 end
 
 post '/bet' do
@@ -123,6 +123,12 @@ post '/game' do
 end
 
 post '/game/player_hit' do
+  def calculate(cards, deck)
+    total = 0
+    cards.each { |card| total += deck[card]}
+    cards.select { |e| e.include? 'ace'}.count.times {total -= 10 if total > 21}
+    total
+  end
   session[:player_cards] << session[:card_files].shift
   session[:player_total] = calculate(session[:player_cards], session[:deck])
   erb :game
