@@ -22,14 +22,14 @@
 </div>
 
 <% if session[:dealer_total] == 21 %>
-    Dealer has Blackjack! You lost!
+    <h5>Dealer has Blackjack! You lost!</h5>
   <% session[:total_amount] = (session[:total_amount] - session[:bet_amount]) %>
   <div class="buttons">
     Play again? <a href="/bet" class="btn btn-primary"> Yes </a>
     <a href="/game_over" class="btn"> No </a>
   </div>
 <% elsif session[:dealer_total] > 21 %>
-    Dealer Busted!
+    <h5>Dealer Busted!</h5>
   <% session[:total_amount] = (session[:total_amount] + session[:bet_amount]) %>
   <div class="buttons">
     Play again? <a href="/bet" class="btn btn-primary"> Yes </a>
@@ -40,21 +40,21 @@
     <input type="submit" value="Click to see dealer's next card" class="btn btn-primary">
   </form>
 <% elsif session[:player_total] > session[:dealer_total] %>
-    You win!
+    <h5>You win!</h5>
   <% session[:total_amount] = (session[:total_amount] + session[:bet_amount]) %>
   <div class="buttons">
     Play again? <a href="/bet" class="btn btn-primary"> Yes </a>
     <a href="/game_over" class="btn"> No </a>
   </div>
 <% elsif session[:dealer_total] > session[:player_total] %>
-    Womp!  You lost...
+    <h5>Womp!  You lost...</h5>
   <% session[:total_amount] = (session[:total_amount] - session[:bet_amount]) %>
   <div class="buttons">
     Play again? <a href="/bet" class="btn btn-primary"> Yes </a>
     <a href="/game_over" class="btn"> No </a>
   </div>
 <% else %>
-  It's a tie!
+  <h5>It's a tie!</h5>
   <div class="buttons">
   Play again? <a href="/bet" class="btn btn-primary"> Yes </a>
     <a href="/game_over" class="btn"> No </a>
@@ -68,14 +68,14 @@
 <% session[:player_cards].each do |card| %>
 <img src= <%= "#{session[:card_path] + card}" %> /> <% end %>
 <br>
-You have <%= session[:player_total] %>.
+<h5>You have <%= session[:player_total] %>.</h5>
 </div>
 
 <% if session[:player_total] == 21 %>
-  You have Blackjack! You win!
+  <h5>You have Blackjack! You win!</h5>
   <% session[:total_amount] = (session[:total_amount] + session[:bet_amount]) %>
 <% elsif session[:player_total] > 21 %>
-  Busted! You lose!
+  <h5>Busted! You lose!</h5>
   <% session[:total_amount] = (session[:total_amount] - session[:bet_amount]) %>
 <% else
     nil

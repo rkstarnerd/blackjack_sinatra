@@ -1,2 +1,15 @@
-<center><h3>You've won $<%= session[:total_amount] %>!!</h3>
-Next stop? Vegas!</center>
+<center>
+  <div class="block">
+    <% if session[:total_amount] > 500 %>
+      <h3>You've won $<%= session[:total_amount] %>!!</h3>
+      <h4>Next stop? Vegas!</h4>
+    <% elsif session[:total_amount] > 0 && session[:total_amount] < 500 %>
+      <h3>You still have $<%= session[:total_amount] %>!!</h3>
+      <h4>Thanks for playing!</h4>
+    <% else %>
+      <h3>Oh no!  You lost all of your money!</h3>
+      <h4>Next stop.. More practice?</h4>
+      <iframe width="420" height="315" src="//www.youtube.com/embed/-hOmLL8jZVU" frameborder="0" allowfullscreen></iframe>
+    <% end %>
+  </div>
+</center>
