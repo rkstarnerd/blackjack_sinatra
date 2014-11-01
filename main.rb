@@ -73,14 +73,22 @@ get '/new_game' do
   erb :new_game
 end
 
+get ('/bet') { erb :bet }
+
 post '/bet' do
-  session[:name] = params[:name].capitalize
-  erb :bet
+  if params[:bet_amount].nil? || params[:bet_amount].to_i == 0
+    @error = "You must make a bet."
+    halt erb(:bet)
+  elsif params[:bet_amount].to_i > session[:total_amount]
+    @error  = "Bet amount cannot exceed what you have: $#{session[:total_amount]}."
+    halt erb(:bet)
+  else
+    session[:bet_amount] = params[:bet_amount].to_i
+    redirect '/game'
+  end
 end
 
 get ('/game') { erb :game }
-
-get ('/bet') { erb :bet }
 
 post '/game' do
   session[:bet_amount] = params[:bet_amount].to_i
