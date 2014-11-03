@@ -3,16 +3,16 @@ require 'sinatra/reloader' if development?
 require 'erb'
 
 use Rack::Session::Cookie, :key => 'rack.session',
-                           :path => '/',
-                           :secret => 'FvFRCS44N26EfeCALAhc'
+  :path => '/',
+  :secret => 'FvFRCS44N26EfeCALAhc'
 
 set :sessions, true
 
 get '/' do
   if session[:name]
-  redirect '/game'
+    redirect '/game'
   else
-  redirect '/new_game'
+    redirect '/new_game'
   end
 end
 
@@ -37,15 +37,15 @@ get '/new_game' do
     elsif card.include? 'king'
       values << 10
     else card.each_char do |e|
-      if e.to_i == 1
-        values << 10
-      elsif e.to_i != 0 && e.to_i != 1
-        values << e.to_i
-      else
-        values << nil
+        if e.to_i == 1
+          values << 10
+        elsif e.to_i != 0 && e.to_i != 1
+          values << e.to_i
+        else
+          values << nil
+        end
       end
     end
-  end
   end
 
   values.compact!
@@ -73,10 +73,22 @@ get '/new_game' do
   erb :new_game
 end
 
+post '/new_game' do
+  if params[:name].empty?
+    @error = "Name is required"
+    halt erb(:new_game)
+  else
+    session[:name] = params[:name].capitalize
+    redirect '/bet'
+  end
+end
+
 get ('/bet') { erb :bet }
 
 post '/bet' do
-  if params[:bet_amount].nil? || params[:bet_amount].to_i == 0
+  if session[:total_amount] <= 0
+    redirect '/game_over'
+  elsif params[:bet_amount].nil? || params[:bet_amount].to_i == 0
     @error = "You must make a bet."
     halt erb(:bet)
   elsif params[:bet_amount].to_i > session[:total_amount]
@@ -88,10 +100,7 @@ post '/bet' do
   end
 end
 
-get ('/game') { erb :game }
-
-post '/game' do
-  session[:bet_amount] = params[:bet_amount].to_i
+get '/game' do
   card_files = []
   values = []
   files = Dir.entries("public/images/cards/")
@@ -109,15 +118,15 @@ post '/game' do
     elsif card.include? 'king'
       values << 10
     else card.each_char do |e|
-      if e.to_i == 1
-        values << 10
-      elsif e.to_i != 0 && e.to_i != 1
-        values << e.to_i
-      else
-        values << nil
+        if e.to_i == 1
+          values << 10
+        elsif e.to_i != 0 && e.to_i != 1
+          values << e.to_i
+        else
+          values << nil
+        end
       end
     end
-  end
   end
 
   def calculate(cards, deck)
@@ -137,6 +146,8 @@ post '/game' do
   session[:player_total] = calculate(session[:player_cards], session[:deck])
   erb :game
 end
+
+post ('/game') { erb :game }
 
 post '/game/player_hit' do
   def calculate(cards, deck)
@@ -158,6 +169,6 @@ post '/game/dealer_hit' do
   erb :game_stay
 end
 
-get ('/game_over'){ erb :game_over }
+get ('/game_over') { erb :game_over }
 
 not_found { erb :not_found }

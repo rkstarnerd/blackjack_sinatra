@@ -1,59 +1,53 @@
-
-<h1>Blackjack!</h1>
-
-<div class="cards">
+<h1><center>Blackjack!</center></h1>
+<div class="well" id="dealer_area">
   <h4>Dealer's Cards:<br>
   <img src="/images/cards/cover.jpg" />
   <img src= <%= "#{session[:card_path] + session[:dealer_cards].last}" %> />
-
-<table class="table table-hover">
-  <tr>
-    <td>Bet Amount</td>
-    <td><%= session[:bet_amount] %></td>
-  </tr>
-  <tr>
-    <td>Total Amount</td>
-    <td><%= session[:total_amount] %></td>
-  </tr>
-</table>
-
+  <table class="table table-hover">
+    <tr>
+      <td>Bet Amount</td>
+      <td><%= session[:bet_amount] %></td>
+    </tr>
+    <tr>
+      <td>Total Amount</td>
+      <td><%= session[:total_amount] %></td>
+    </tr>
+  </table>
 </div>
 <p>
-<div class="cards">
+<div class="well" id="player_area">
   <h4><%= session[:name] %>'s Cards:</h4><br>
   <% session[:player_cards].each do |card| %>
-    <img src= <%= "#{session[:card_path] + card}" %> />
+  <img src= <%= "#{session[:card_path] + card}" %> />
   <% end %>
-</div>
-<br>
-<br>
-
-You have <%= session[:player_total] %>.
-
-<% if session[:player_total] == 21 %>
+  <br>
+  <br>
+  You have <%= session[:player_total] %>.
+  <% if session[:player_total] == 21 %>
   You have Blackjack! You win!
   <% session[:total_amount] = (session[:total_amount] + session[:bet_amount]) %>
   <div class="buttons">
     Play again? <a href="/bet" class="btn btn-primary"> Yes </a>
     <a href="/game_over" class="btn"> No </a>
   </div>
-<% elsif session[:player_total] > 21 %>
+  <% elsif session[:player_total] > 21 %>
   Busted! You lose!
-<% session[:total_amount] = (session[:total_amount] - session[:bet_amount]) %>
+  <% session[:total_amount] = (session[:total_amount] - session[:bet_amount]) %>
   <div class="buttons">
     Play again? <a href="/bet" class="btn btn-primary"> Yes </a>
     <a href="/game_over" class="btn"> No </a>
   </div>
-<% else %>
+  <% else %>
   What would you like to do, <%= session[:name] %>?
-
-<div class="buttons">
-<form id="hit" action='/game/player_hit' method="post">
-  <input type="submit" class="btn btn-success btn-large" name="hit" value=" Hit ">
-</form>
-
-<form id="stay" action='/game/player_stay' method="post">
-  <input type="submit" class="btn btn-danger btn-large" name="stay" value="Stay">
-</form>
-<% end %>
+  <div class="buttons-hit">
+    <form id="hit" action='/game/player_hit' method="post">
+      <input type="submit" class="btn btn-success btn-large" name="hit" value=" Hit ">
+    </form>
+  </div>
+  <div class="buttons-stay">
+    <form id="stay" action='/game/player_stay' method="post">
+      <input type="submit" class="btn btn-danger btn-large" name="stay" value="Stay">
+    </form>
+    <% end %>
+  </div>
 </div>

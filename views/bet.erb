@@ -1,10 +1,10 @@
 <center>
-  <div class="block">
-    <h3 style="color: black">Make a bet for this round.</h3>
-    <h4><%= session[:name].capitalize %>, you have $<%= session[:total_amount] %>.</h4>
-    <form action="/bet" method="post">
+<div class="block">
+  <h3 style="color: black">Make a bet for this round.</h3>
+  <h4><%= session[:name] %>, you have $<%= session[:total_amount] %>.</h4>
+  <form action="/bet" method="post">
     <input type="text" name="bet_amount" placeholder="Enter Amount">
     <br> <input type="submit" class="btn" value="Make Bet">
-    </form>
-  </div>
+  </form>
+</div>
 </center>

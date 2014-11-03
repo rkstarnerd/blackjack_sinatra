@@ -1,43 +1,45 @@
-img {
-  width: 10%;
-  height: auto;
-  box-shadow: 3px 3px 5px 2px rgba(0, 0, 0, 0.3);
-}
+img { box-shadow: 3px 3px 5px 2px rgba(0, 0, 0, 0.3); height: auto; width: 10%; }
 
-.buttons {
-  float: right;
-  position: relative;
-  top: -155px;
-  left: 100px;
-  font-weight:bold;
-}
-
-* {
-  color: black;
-}
 
 .table-hover {
   float: right;
   height: 20px;
+  margin: left;
   width: 20px;
 }
 
-.cards {
-  padding: 2px 2px 2px 2px;
-}
+.buttons { font-weight: bold; }
 
-.hit_stay_buttons {
-  float: right;
+.buttons-hit {
+  font-weight: bold;
+  left: 82%;
   position: relative;
-  top: -250px;
+  top: -63%;
 }
 
-.block {
-  width: 500px;
-  height: 50px;
-  position: absolute;
-  top: 30%;
-  left: 40%;
-  margin-left: -50px;
-  margin-top: -25px;
+.buttons-stay {
+  font-weight: bold;
+  left: 92%;
+  position: relative;
+  top: -63px;
 }
+
+* { color: black; }
+
+.well {
+  background-color: #117900;
+  color: black;
+  padding: 2px 2px 2px 2px;
+  position: relative;
+}
+
+/*.block {
+width: 500px;
+height: 50px;
+position: absolute;
+top: 30%;
+left: 40%;
+margin-left: -50px;
+margin-top: -25px;
+}
+*/

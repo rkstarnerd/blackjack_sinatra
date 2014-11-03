@@ -1,82 +1,64 @@
-
-<h1>Blackjack!</h1>
-
-<div class="cards">
+<h1><center>Blackjack!</center></h1>
+<div class="well" id="dealer_area">
   <h4>Dealer's Cards:<br>
   <% session[:dealer_cards].each do |card| %>
-    <img src= <%= "#{session[:card_path] + card}" %> />
+  <img src= <%= "#{session[:card_path] + card}" %> />
   <% end %>
   <br>Dealer has <%= session[:dealer_total] %>
-
-  <table class="table table-hover">
-  <tr>
-    <td>Bet Amount</td>
-    <td><%= session[:bet_amount] %></td>
-  </tr>
-  <tr>
-    <td>Total Amount</td>
-    <td><%= session[:total_amount] %></td>
-  </tr>
-</table>
-
 </div>
-
-<% if session[:dealer_total] == 21 %>
-    <h5>Dealer has Blackjack! You lost!</h5>
+<div class="well" id="player_area">
+  <% if session[:dealer_total] == 21 %>
+  <h5>Dealer has Blackjack! You lost!</h5>
   <% session[:total_amount] = (session[:total_amount] - session[:bet_amount]) %>
   <div class="buttons">
     Play again? <a href="/bet" class="btn btn-primary"> Yes </a>
     <a href="/game_over" class="btn"> No </a>
   </div>
-<% elsif session[:dealer_total] > 21 %>
-    <h5>Dealer Busted!</h5>
+  <% elsif session[:dealer_total] > 21 %>
+  <h5>Dealer Busted!</h5>
   <% session[:total_amount] = (session[:total_amount] + session[:bet_amount]) %>
   <div class="buttons">
     Play again? <a href="/bet" class="btn btn-primary"> Yes </a>
     <a href="/game_over" class="btn"> No </a>
   </div>
-<% elsif session[:dealer_total] < 17 %>
+  <% elsif session[:dealer_total] < 17 %>
   <form id="dealer_hit" action="/game/dealer_hit" method="post">
     <input type="submit" value="Click to see dealer's next card" class="btn btn-primary">
   </form>
-<% elsif session[:player_total] > session[:dealer_total] %>
-    <h5>You win!</h5>
+  <% elsif session[:player_total] > session[:dealer_total] %>
+  <h5>You win!</h5>
   <% session[:total_amount] = (session[:total_amount] + session[:bet_amount]) %>
   <div class="buttons">
     Play again? <a href="/bet" class="btn btn-primary"> Yes </a>
     <a href="/game_over" class="btn"> No </a>
   </div>
-<% elsif session[:dealer_total] > session[:player_total] %>
-    <h5>Womp!  You lost...</h5>
+  <% elsif session[:dealer_total] > session[:player_total] %>
+  <h5>Womp!  You lost...</h5>
   <% session[:total_amount] = (session[:total_amount] - session[:bet_amount]) %>
   <div class="buttons">
     Play again? <a href="/bet" class="btn btn-primary"> Yes </a>
     <a href="/game_over" class="btn"> No </a>
   </div>
-<% else %>
+  <% else %>
   <h5>It's a tie!</h5>
   <div class="buttons">
-  Play again? <a href="/bet" class="btn btn-primary"> Yes </a>
+    Play again? <a href="/bet" class="btn btn-primary"> Yes </a>
     <a href="/game_over" class="btn"> No </a>
   </div>
-<% end %>
-<br>
-
-<div class="cards">
-<p><h4><%= session[:name] %>'s Cards:</h4><br>
-
-<% session[:player_cards].each do |card| %>
-<img src= <%= "#{session[:card_path] + card}" %> /> <% end %>
-<br>
-<h5>You have <%= session[:player_total] %>.</h5>
-</div>
-
-<% if session[:player_total] == 21 %>
+  <% end %>
+  <br>
+  <p><h4><%= session[:name] %>'s Cards:</h4><br>
+  <% session[:player_cards].each do |card| %>
+  <img src= <%= "#{session[:card_path] + card}" %> /> <% end %>
+  <br>
+  <h5>You have <%= session[:player_total] %>.</h5>
+  <% if session[:player_total] == 21 %>
   <h5>You have Blackjack! You win!</h5>
   <% session[:total_amount] = (session[:total_amount] + session[:bet_amount]) %>
-<% elsif session[:player_total] > 21 %>
+  <% elsif session[:player_total] > 21 %>
   <h5>Busted! You lose!</h5>
   <% session[:total_amount] = (session[:total_amount] - session[:bet_amount]) %>
-<% else
-    nil
- end %>
+  <% else
+  nil
+  end %>
+</div>
