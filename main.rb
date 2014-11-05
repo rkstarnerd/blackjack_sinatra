@@ -6,8 +6,6 @@ use Rack::Session::Cookie, :key => 'rack.session',
   :path => '/',
   :secret => 'FvFRCS44N26EfeCALAhc'
 
-set :sessions, true
-
 get '/' do
   if session[:name]
     redirect '/game'
